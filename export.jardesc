@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jardesc>
+    <jar path="C:/Users/root/Desktop/WebDriverRozipp/qwe.jar"/>
+    <options buildIfNeeded="true" compress="false" descriptionLocation="/WebTestModul/export.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="true" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" mainClassHandleIdentifier="=WebTestModul/src=/optional=/true=/=/maven.pomderived=/true=/&lt;ua.rozipp{Window.java[Window" manifestLocation="/WebTestModul/manifest.mf" manifestVersion="1.0" reuseManifest="false" saveManifest="true" usesManifest="true">
+        <sealing sealJar="true">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="false" exportJavaFiles="false" exportOutputFolder="true">
+        <folder path="/WebTestModul/bin"/>
+        <folder path="/WebTestModul/WebDriver"/>
+        <file path="/WebTestModul/pom.xml"/>
+        <javaElement handleIdentifier="=WebTestModul/src=/optional=/true=/=/maven.pomderived=/true=/"/>
+        <file path="/WebTestModul/.classpath"/>
+        <file path="/WebTestModul/manifest.mf"/>
+        <file path="/WebTestModul/.project"/>
+    </selectedElements>
+</jardesc>
