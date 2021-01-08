@@ -22,10 +22,6 @@ import org.eclipse.swt.events.ShellEvent;
 
 public class Window {
 
-	static MyProperties my;
-	static Window window;
-	static WebModul webModul;
-
 	protected Shell shell;
 	public Text list;
 	public Text date_text;
@@ -40,24 +36,14 @@ public class Window {
 	public Text find_text;
 	private ProgressBar progressBar;
 
-	public static void main(String[] args) {
-		try {
-			my = new MyProperties();
-			window = new Window();
-			window.open();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void open() {
 		Display display = Display.getDefault();
 		createContents();
 		shell.open();
 		shell.layout();
-		my.window = this;
+		Main.my.window = this;
 		try{
-			my.writeToWindowProperties();
+			Main.my.writeToWindowProperties();
 		} catch (Exception e) {}
 		try {
 			while (!shell.isDisposed()) {
@@ -74,10 +60,10 @@ public class Window {
 			@Override
 			public void shellClosed(ShellEvent e) {
 				try {
-					webModul.getDriver().close();
+					Main.webModul.getDriver().close();
 				} catch (Exception e1) {
 					warning_text.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
-					window.warning_text.setText(e1.getMessage());
+					Main.window.warning_text.setText(e1.getMessage());
 					e1.printStackTrace();
 				}
 			}
@@ -96,10 +82,10 @@ public class Window {
 			public void widgetSelected(SelectionEvent e) {
 				try {
 					btnNewButton.setEnabled(false);
-					webModul = new WebModul();
+					Main.webModul = new WebModul();
 				} catch (Exception e1) {
 					warning_text.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
-					window.warning_text.setText(e1.getMessage());
+					Main.window.warning_text.setText(e1.getMessage());
 					e1.printStackTrace();
 				}
 			}
@@ -110,7 +96,7 @@ public class Window {
 		btnNewButton_2.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				my.readFromWindowProperties();
+				Main.my.readFromWindowProperties();
 			}
 		});
 		btnNewButton_2.setText("Зберегти налаштування");
@@ -120,24 +106,24 @@ public class Window {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				try {
-					if (webModul == null) webModul = new WebModul();
-					my.readFromWindowProperties();
-					my.checkCreateGolosuvannaWarning();
-					int count = my.rishennyaNames.length;
+					if (Main.webModul == null) Main.webModul = new WebModul();
+					Main.my.readFromWindowProperties();
+					Main.my.checkCreateGolosuvannaWarning();
+					int count = Main.my.rishennyaNames.length;
 					progressBar.setMinimum(0);
 					progressBar.setMaximum(count);
 					warning_text.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 					warning_text.setText("Доданою " + count + " голосувань");
 					for (Integer i = 0; i < count; i++) {
-						String number = (i + my.firstNumber) + my.sessionN;
+						String number = (i + Main.my.firstNumber) + Main.my.sessionN;
 						String doc_name = "Поіменне голосування по рішенню №" + number;
-						webModul.writeElement(my.rishennyaNames[i], number, my.date, my.sessionSK, my.session, doc_name, my.files[i].getAbsolutePath());
+						Main.webModul.writeElement(Main.my.rishennyaNames[i], number, Main.my.date, Main.my.sessionSK, Main.my.session, doc_name, Main.my.files[i].getAbsolutePath());
 						progressBar.setSelection(i);
 						shell.redraw();
 					}
 				} catch (Exception e1) {
 					warning_text.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
-					window.warning_text.setText(e1.getMessage());
+					Main.window.warning_text.setText(e1.getMessage());
 					e1.printStackTrace();
 				}
 			}
@@ -149,23 +135,23 @@ public class Window {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				try {
-					my.readFromWindowProperties();
-					my.checkCreateRishennaWarning();
-					int count = my.files2.length;
+					Main.my.readFromWindowProperties();
+					Main.my.checkCreateRishennaWarning();
+					int count = Main.my.files2.length;
 					progressBar.setMinimum(0);
 					progressBar.setMaximum(count);
 					warning_text.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 					warning_text.setText("Доданою " + count + " рішень");
 					for (int i = 0; i < count; i++) {
-						String doc_file = my.files2[i].getAbsolutePath();
-						String number = i + my.firstNumber + my.sessionN;
-						webModul.openFindRishennya(number);
-						webModul.editRishennya(number, doc_file);
+						String doc_file = Main.my.files2[i].getAbsolutePath();
+						String number = i + Main.my.firstNumber + Main.my.sessionN;
+						Main.webModul.openFindRishennya(number);
+						Main.webModul.editRishennya(number, doc_file);
 						progressBar.setSelection(i);
 					}
 				} catch (Exception e1) {
 					warning_text.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
-					window.warning_text.setText(e1.getMessage());
+					Main.window.warning_text.setText(e1.getMessage());
 					e1.printStackTrace();
 				}
 			}
@@ -177,26 +163,26 @@ public class Window {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				try {
-					my.readFromWindowProperties();
-					my.checkCreateRishennaWarning();
-					my.checkCreateGolosuvannaWarning();
-					int count = my.rishennyaNames.length;
-					if (count != my.files2.length) throw new MyException("Не однаковий розмір кількості голосувань та кількості рішень");
+					Main.my.readFromWindowProperties();
+					Main.my.checkCreateRishennaWarning();
+					Main.my.checkCreateGolosuvannaWarning();
+					int count = Main.my.rishennyaNames.length;
+					if (count != Main.my.files2.length) throw new MyException("Не однаковий розмір кількості голосувань та кількості рішень");
 
 					progressBar.setMinimum(0);
 					progressBar.setMaximum(count);
 					warning_text.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 					warning_text.setText("Доданою " + count + " голосувань та рішень");
 					for (int i = 0; i < count; i++) {
-						String number = (i + my.firstNumber) + my.sessionN;
+						String number = (i + Main.my.firstNumber) + Main.my.sessionN;
 						String doc_name = "Поіменне голосування по рішенню №" + number;
-						webModul.writeElementAndRishennya(my.rishennyaNames[i], number, my.date, my.sessionSK, my.session, doc_name, my.files[i].getAbsolutePath(), my.files2[i].getAbsolutePath());
+						Main.webModul.writeElementAndRishennya(Main.my.rishennyaNames[i], number, Main.my.date, Main.my.sessionSK, Main.my.session, doc_name, Main.my.files[i].getAbsolutePath(), Main.my.files2[i].getAbsolutePath());
 
 						progressBar.setSelection(i);
 					}
 				} catch (Exception e1) {
 					warning_text.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
-					window.warning_text.setText(e1.getMessage());
+					Main.window.warning_text.setText(e1.getMessage());
 					e1.printStackTrace();
 				}
 			}
@@ -213,10 +199,10 @@ public class Window {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				try {
-					webModul.openFindRishennya(find_text.getText());
+					Main.webModul.openFindRishennya(find_text.getText());
 				} catch (Exception e1) {
 					warning_text.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
-					window.warning_text.setText(e1.getMessage());
+					Main.window.warning_text.setText(e1.getMessage());
 					e1.printStackTrace();
 				}
 			}
@@ -228,11 +214,11 @@ public class Window {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				try {
-					String title = webModul.deleteFindRishennya(find_text.getText());
+					String title = Main.webModul.deleteFindRishennya(find_text.getText());
 					warning_text.setText("Виделено документ \"" + title + "\"");
 				} catch (Exception e1) {
 					warning_text.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
-					window.warning_text.setText(e1.getMessage());
+					Main.window.warning_text.setText(e1.getMessage());
 					e1.printStackTrace();
 				}
 			}
@@ -250,8 +236,8 @@ public class Window {
 					list.setText("");
 					Integer i = 0;
 					while (true) {
-						String nomerRishennya = (i + my.firstNumber) + my.sessionN;
-						String res = webModul.openFindRishennya(nomerRishennya);
+						String nomerRishennya = (i + Main.my.firstNumber) + Main.my.sessionN;
+						String res = Main.webModul.openFindRishennya(nomerRishennya);
 						if (res == null) throw new MyException("Не знайшов рішення під номером " + nomerRishennya);
 
 						String ret = nomerRishennya + "\t" + res;
@@ -261,7 +247,7 @@ public class Window {
 					}
 				} catch (Exception e1) {
 					warning_text.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
-					window.warning_text.setText(e1.getMessage());
+					Main.window.warning_text.setText(e1.getMessage());
 					e1.printStackTrace();
 				}
 			}
@@ -333,7 +319,7 @@ public class Window {
 			public void widgetSelected(SelectionEvent e) {
 				DirectoryDialog dlg = new DirectoryDialog(shell, SWT.OPEN);
 				String fdir = dlg.open();
-				if (fdir != null) my.setFolder(fdir);
+				if (fdir != null) Main.my.setFolder(fdir);
 			}
 		});
 		btnNewButton_3.setText("Вибрати папку з голосуванням");
@@ -348,10 +334,10 @@ public class Window {
 				try {
 					DirectoryDialog dlg = new DirectoryDialog(shell, SWT.OPEN);
 					String fdir = dlg.open();
-					if (fdir != null) my.setFolder2(fdir);
+					if (fdir != null) Main.my.setFolder2(fdir);
 				} catch (Exception e1) {
 					warning_text.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
-					window.warning_text.setText(e1.getMessage());
+					Main.window.warning_text.setText(e1.getMessage());
 					e1.printStackTrace();
 				}
 			}
